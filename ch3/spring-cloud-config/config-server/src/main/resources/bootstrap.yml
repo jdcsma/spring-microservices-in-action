@@ -1,0 +1,13 @@
+spring:
+  profiles:
+    active: native
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: file:///Users/liujun/Data/dev/dev-java/spring-microservices-in-action/ch3/spring-cloud-config/config-server/src/main/resources/config/licensing-service
+        encrypt:
+          enabled: false
+# 环境变量: export ENCRYPT_KEY=IMSYMMETRIC
+#encrypt:
+#  key: IMSYMMETRIC
