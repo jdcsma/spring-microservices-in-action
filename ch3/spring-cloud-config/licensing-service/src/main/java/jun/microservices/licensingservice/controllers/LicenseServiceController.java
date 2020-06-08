@@ -15,13 +15,17 @@ import java.util.Map;
 @RequestMapping(value = "v1/organizations/{organizationId}/licenses")
 public class LicenseServiceController {
 
-    @Autowired
     private LicenseService licenseService;
+
+    @Autowired
+    public void setLicenseService(LicenseService licenseService) {
+        this.licenseService = licenseService;
+    }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public List<License> getLicenses(
             @PathVariable("organizationId") String organizationId) {
-        return this.licenseService.getLicensesByOrg(organizationId);
+        return this.licenseService.getLicenses(organizationId);
     }
 
     @RequestMapping(value = "/{licenseId}", method = RequestMethod.GET)
@@ -38,7 +42,7 @@ public class LicenseServiceController {
 
     @RequestMapping(value = "/", method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public String saveLicense(@RequestBody @Valid License license,
+    public String saveLicense(@Valid @RequestBody License license,
                               Errors errors, Map<String, Object> model) {
         if (!errors.hasErrors()) {
             this.licenseService.saveLicense(license);
@@ -51,5 +55,4 @@ public class LicenseServiceController {
         this.licenseService.deleteLicense(id);
         return "This is the delete.";
     }
-
 }

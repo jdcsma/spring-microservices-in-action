@@ -14,5 +14,4 @@ public interface LicenseRepository extends
 
     License findByOrganizationIdAndLicenseId(
             String organizationId, String licenseId);
-
 }

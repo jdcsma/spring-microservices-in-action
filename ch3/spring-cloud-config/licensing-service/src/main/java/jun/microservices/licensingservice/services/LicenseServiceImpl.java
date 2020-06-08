@@ -12,11 +12,27 @@ import java.util.List;
 @Service
 public class LicenseServiceImpl implements LicenseService {
 
-    @Autowired
     private LicenseRepository licenseRepository;
 
-    @Autowired
     private ServiceConfig serviceConfig;
+
+    @Autowired
+    public void setLicenseRepository(LicenseRepository licenseRepository) {
+        this.licenseRepository = licenseRepository;
+    }
+
+    @Autowired
+    public void setServiceConfig(ServiceConfig serviceConfig) {
+        this.serviceConfig = serviceConfig;
+    }
+
+    @Override
+    @Transactional
+    public List<License> getLicenses(String organizationId) {
+        List<License> licenses = this.licenseRepository.findByOrganizationId(organizationId);
+        licenses.forEach(l -> l.setComment(serviceConfig.getServiceProperty()));
+        return licenses;
+    }
 
     @Override
     @Transactional
@@ -31,21 +47,13 @@ public class LicenseServiceImpl implements LicenseService {
 
     @Override
     @Transactional
-    public List<License> getLicensesByOrg(String organizationId) {
-        List<License> licenses = this.licenseRepository.findByOrganizationId(organizationId);
-        licenses.forEach(l -> l.setComment(serviceConfig.getServiceProperty()));
-        return licenses;
-    }
-
-    @Override
-    @Transactional
     public void saveLicense(License license) {
         this.licenseRepository.save(license);
     }
 
     @Override
+    @Transactional
     public void deleteLicense(long id) {
         this.licenseRepository.deleteById(id);
     }
-
 }

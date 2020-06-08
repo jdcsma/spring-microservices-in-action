@@ -12,5 +12,4 @@ public class ServiceConfig {
     public String getServiceProperty() {
         return serviceProperty;
     }
-
 }

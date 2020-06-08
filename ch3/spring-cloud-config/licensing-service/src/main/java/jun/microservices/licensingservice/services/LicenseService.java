@@ -10,13 +10,12 @@ import java.util.List;
 @Validated
 public interface LicenseService {
 
-    License getLicense(String organizationId, String licenseId);
-
     @NotNull
-    List<License> getLicensesByOrg(String organizationId);
+    List<License> getLicenses(@NotNull String organizationId);
+
+    License getLicense(@NotNull String organizationId, @NotNull String licenseId);
 
     void saveLicense(@Valid License license);
 
     void deleteLicense(long id);
-
 }
