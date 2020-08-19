@@ -16,5 +16,5 @@ spring:
       uri: http://localhost:8080
 
 # 环境变量: export ENCRYPT_KEY=IMSYMMETRIC
-#encrypt:
-#  key: IMSYMMETRIC
+encrypt:
+  key: IMSYMMETRIC

@@ -46,5 +46,5 @@ spring:
 #          password: password
 
 # 环境变量: export ENCRYPT_KEY=IMSYMMETRIC
-#encrypt:
-#  key: IMSYMMETRIC
+encrypt:
+  key: IMSYMMETRIC
