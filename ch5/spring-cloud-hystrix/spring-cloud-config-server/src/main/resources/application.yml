@@ -1,0 +1,13 @@
+debug: false
+
+server:
+  port: 8080
+
+spring:
+  application:
+    name: spring-cloud-config-server
+  profiles:
+    active: native
+
+encrypt: # or set environment variable: export ENCRYPT_KEY=IMSYMMETRIC
+  key: IMSYMMETRIC
