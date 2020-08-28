@@ -29,8 +29,8 @@
     </properties>
 
     <modules>
-        <module>spring-cloud-eureka-server</module>
         <module>spring-cloud-config-server</module>
+        <module>spring-cloud-eureka-server</module>
         <module>spring-cloud-licensing-service</module>
         <module>spring-cloud-organization-service</module>
     </modules>

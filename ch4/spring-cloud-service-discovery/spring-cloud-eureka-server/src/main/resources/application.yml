@@ -6,15 +6,15 @@ server:
 
 spring:
   application:
-    name: spring-cloud-eureka-server
+    name: eureka-server
 
 eureka:
   client:
     # 在 Eureka 应用程序启动时不要通过 Eureka 服务注册，
     # 因为它本身就是 Eureka 服务。
-    registerWithEureka: false
+    register-with-eureka: false
     # 在 Eureka 应用程序启动时，不会尝试在本地缓存注册表信息。
-    fetchRegistry: false
+    fetch-registry: false
   server:
     # 设置 Eureka 启动后公布通过它注册的服务的等待时间，默认为 5 分钟，
     # 这样可以让所有服务都有机会在公布它们之前通过它来注册。
@@ -23,4 +23,4 @@ eureka:
     # 每次服务注册需要 30s 的时间才能显示在 Eureka 服务中，因为 Eureka
     # 需要从服务接收 3 次连续心跳 ping，每次心跳 ping 间隔 10s，然后才
     # 能使用这个服务。在部署和测试服务时，要牢记这一点。
-    waitTimeInMsWhenSyncEmpty: 5
+    wait-time-in-ms-when-sync-empty: 5

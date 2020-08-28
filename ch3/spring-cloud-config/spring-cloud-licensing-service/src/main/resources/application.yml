@@ -1,0 +1,15 @@
+debug: false
+
+server:
+  port: 8888
+
+spring:
+  application:
+    name: licensing-service
+  profiles:
+    active: default
+  jpa:
+    hibernate:
+      naming:
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl

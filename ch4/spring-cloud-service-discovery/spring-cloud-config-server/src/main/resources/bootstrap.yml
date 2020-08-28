@@ -13,38 +13,28 @@
 ####
 
 spring:
-  application:
-    name: spring-cloud-config-server
-  profiles:
-    active: native
   cloud:
     config:
       server:
-        encrypt.enabled: false
+        encrypt:
+          enabled: false
         native:
-          # searchLocations: file://<ch4>/spring-cloud-service-discovery/spring-cloud-config-server/src/main/resources/config/licensing-service,
-          #                  file:/<ch4>/spring-cloud-service-discovery/spring-cloud-config-server/src/main/resources/config/organization-service
-          searchLocations: classpath:config/licensing-service,classpath:config/organization-service
+          search-locations: classpath:config/licensing-service,classpath:config/organization-service
 
 ####
 # Git-based solution
 ####
 
 #spring:
-#  application:
-#    name: spring-cloud-config-server
-#  profiles:
-#    active: native
 #  cloud:
 #    config:
 #      server:
 #        encrypt.enabled: false
 #        git:
 #          uri: https://github.com/xxxx/config-repo/
-#          searchPaths: licensing-service,organization-service
+#          search-paths: licensing-service,organization-service
 #          username: username
 #          password: password
 
-# 环境变量: export ENCRYPT_KEY=IMSYMMETRIC
-encrypt:
+encrypt: # or set environment variable: export ENCRYPT_KEY=IMSYMMETRIC
   key: IMSYMMETRIC
