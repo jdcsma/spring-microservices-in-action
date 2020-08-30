@@ -19,7 +19,7 @@ spring:
         encrypt:
           enabled: false
         native:
-          search-locations: classpath:config/licensing-service,classpath:config/organization-service
+          search-locations: classpath:config/licensing-service,classpath:config/organization-service,classpath:config/zuul-service
 
 ####
 # Git-based solution
@@ -33,7 +33,7 @@ spring:
 #          enabled: false
 #        git:
 #          uri: https://github.com/xxxx/config-repo/
-#          search-paths: licensing-service,organization-service
+#          search-paths: licensing-service,organization-service,zuul-service
 #          username: username
 #          password: password
 

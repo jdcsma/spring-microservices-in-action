@@ -1,7 +1,7 @@
-debug: false
+debug: true
 
 server:
-  port: 8083
+  port: 8084
 
 spring:
   application:
@@ -10,7 +10,7 @@ spring:
     # 1）应用程序 ID 用于表示一组服务实例。在基于 Spring Boot 的微服务中，
     #    应用程序 ID 始终是为 spring.application.name 属性设置的值。
     # 2）实例 ID 是一个随机数，用于代表单个服务实例。
-    name: zuul-server
+    name: zuul-service
   profiles:
     active: default
 
