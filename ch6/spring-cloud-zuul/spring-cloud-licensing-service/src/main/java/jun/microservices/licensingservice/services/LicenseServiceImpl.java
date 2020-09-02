@@ -51,7 +51,7 @@ public class LicenseServiceImpl implements LicenseService {
             commandProperties = {
 //                    @HystrixProperty(
 //                            name = "execution.isolation.thread.timeoutInMilliseconds",
-//                            value = "12000")
+//                            value = "12000"),
                     @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "10"),
                     @HystrixProperty(name = "circuitBreaker.errorThresholdPercentage", value = "75"),
                     @HystrixProperty(name = "circuitBreaker.sleepWindowInMilliseconds", value = "7000"),
@@ -63,7 +63,7 @@ public class LicenseServiceImpl implements LicenseService {
 
         logger.info("Correlation id: {}", UserContextHolder.getContext().getCorrelationId());
 
-        this.randomRunLong();
+//        this.randomRunLong();
 
         List<License> licenses = this.licenseRepository.findByOrganizationId(organizationId);
         licenses.forEach(this::retrieveOrganizationInfo);
@@ -77,7 +77,7 @@ public class LicenseServiceImpl implements LicenseService {
 
         logger.info("Correlation id: {}", UserContextHolder.getContext().getCorrelationId());
 
-        this.randomRunLong();
+//        this.randomRunLong();
 
         License license = this.licenseRepository.findByOrganizationIdAndLicenseId(organizationId, licenseId);
         this.retrieveOrganizationInfo(license);

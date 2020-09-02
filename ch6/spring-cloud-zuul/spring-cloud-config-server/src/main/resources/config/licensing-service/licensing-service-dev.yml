@@ -12,3 +12,6 @@ spring.datasource.tomcat.validationQuery: "SELECT 1"
 redis.server: "redis"
 redis.port: "6379"
 signing.key: "345345fsdfsf5345"
+
+management.endpoints.web.exposure.include: mappings,refresh
+#management.endpoints.web.exposure.include: "*"

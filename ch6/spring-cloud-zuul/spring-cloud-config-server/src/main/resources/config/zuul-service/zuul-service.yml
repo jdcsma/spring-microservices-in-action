@@ -14,3 +14,10 @@ hystrix.command.default.execution.isolation.thread.timeoutInMilliseconds: 2500
 #hystrix.command.licensingservice.execution.isolation.thread.timeoutInMilliseconds: 2
 #licensingservice.ribbon.ReadTimeout: 2
 signing.key: "345345fsdfsf5345"
+
+# Zuul /routes actuator endpoint returning a 404
+# It's now at /actuator/routes and needs to be enabled.
+# URL: http://localhost:8084/actuator/routes
+# See: https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-2.0-Migration-Guide#endpoints
+management.endpoints.web.exposure.include: mappings,filters,routes,refresh
+#management.endpoints.web.exposure.include: "*"

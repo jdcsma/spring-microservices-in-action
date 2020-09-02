@@ -34,7 +34,7 @@ import java.net.URL;
 import java.util.*;
 
 
-@Component
+//@Component
 public class SpecialRoutesFilter extends ZuulFilter {
 
     private static final int FILTER_ORDER = 1;
