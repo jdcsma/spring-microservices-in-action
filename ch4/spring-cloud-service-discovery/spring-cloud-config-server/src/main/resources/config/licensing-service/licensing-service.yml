@@ -1,5 +1,5 @@
 service.property: "I AM A DEFAULT PROPERTY"
-spring.database.driverClassName: "com.mysql.cj.jdbc.Driver"
+spring.database.driver-class-name: "com.mysql.cj.jdbc.Driver"
 spring.jpa.database: "MYSQL"
 spring.jpa.show-sql: "true"
 spring.jpa.properties.hibernate.dialect: "org.hibernate.dialect.MySQL57Dialect"
