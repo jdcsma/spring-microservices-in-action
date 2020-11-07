@@ -15,10 +15,10 @@ public class UserContextInterceptor implements ClientHttpRequestInterceptor {
 
     private static final Logger logger = LogManager.getLogger();
 
-
     @Override
     public ClientHttpResponse intercept(
-            HttpRequest request, byte[] body, ClientHttpRequestExecution execution)
+            HttpRequest request, byte[] body,
+            ClientHttpRequestExecution execution)
             throws IOException {
 
         HttpHeaders headers = request.getHeaders();

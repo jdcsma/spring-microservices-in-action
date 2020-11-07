@@ -18,6 +18,7 @@ public class UserContextFilter implements Filter {
     public void doFilter(
             ServletRequest servletRequest, ServletResponse servletResponse,
             FilterChain filterChain) throws IOException, ServletException {
+
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
 
         UserContextHolder.getContext().setCorrelationId(

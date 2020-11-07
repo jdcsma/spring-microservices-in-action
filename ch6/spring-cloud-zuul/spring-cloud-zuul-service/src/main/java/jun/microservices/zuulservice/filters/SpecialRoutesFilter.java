@@ -34,7 +34,7 @@ import java.net.URL;
 import java.util.*;
 
 
-//@Component
+@Component
 public class SpecialRoutesFilter extends ZuulFilter {
 
     private static final int FILTER_ORDER = 1;
@@ -64,14 +64,28 @@ public class SpecialRoutesFilter extends ZuulFilter {
         return SHOULD_FILTER;
     }
 
+    @Override
+    public Object run() {
+
+        RequestContext ctx = RequestContext.getCurrentContext();
+        AbTestingRoute abTestRoute = getAbRoutingInfo(filterUtils.getServiceId());
+
+        if (abTestRoute != null && useSpecialRoute(abTestRoute)) {
+            String route = buildRouteString(ctx.getRequest().getRequestURI(),
+                    abTestRoute.getEndpoint(), ctx.get("serviceId").toString());
+            forwardToSpecialRoute(route);
+        }
+
+        return null;
+    }
+
     private AbTestingRoute getAbRoutingInfo(String serviceName) {
 
         ResponseEntity<AbTestingRoute> restExchange;
         try {
-            restExchange = restTemplate.exchange(
-                    "http://specialroutesservice/v1/route/abtesting/{serviceName}",
-                    HttpMethod.GET,
-                    null, AbTestingRoute.class, serviceName);
+            restExchange = this.restTemplate.exchange(
+                    "http://special-routes-service/v1/route/abtesting/{serviceName}",
+                    HttpMethod.GET, null, AbTestingRoute.class, serviceName);
         } catch (HttpClientErrorException ex) {
             if (ex.getStatusCode() == HttpStatus.NOT_FOUND) return null;
             throw ex;
@@ -81,7 +95,6 @@ public class SpecialRoutesFilter extends ZuulFilter {
 
     private String buildRouteString(String oldEndpoint, String newEndpoint, String serviceName) {
         int index = oldEndpoint.indexOf(serviceName);
-
         String strippedRoute = oldEndpoint.substring(index + serviceName.length());
         System.out.println("Target route: " + String.format("%s/%s", newEndpoint, strippedRoute));
         return String.format("%s/%s", newEndpoint, strippedRoute);
@@ -111,7 +124,6 @@ public class SpecialRoutesFilter extends ZuulFilter {
                                         HttpRequest httpRequest) throws IOException {
         return httpclient.execute(httpHost, httpRequest);
     }
-
 
     private MultiValueMap<String, String> revertHeaders(Header[] headers) {
         MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
@@ -173,7 +185,6 @@ public class SpecialRoutesFilter extends ZuulFilter {
                 break;
             default:
                 httpRequest = new BasicHttpRequest(verb, uri);
-
         }
 
         httpRequest.setHeaders(convertHeaders(headers));
@@ -181,41 +192,27 @@ public class SpecialRoutesFilter extends ZuulFilter {
         return forwardRequest(httpclient, httpHost, httpRequest);
     }
 
-
     public boolean useSpecialRoute(AbTestingRoute testRoute) {
+
         Random random = new Random();
 
-        if (testRoute.getActive().equals("N")) return false;
+        if (testRoute.getActive().equals("N")) {
+            return false;
+        }
 
         int value = random.nextInt((10 - 1) + 1) + 1;
 
         return testRoute.getWeight() < value;
     }
 
-    @Override
-    public Object run() {
-        RequestContext ctx = RequestContext.getCurrentContext();
-
-        AbTestingRoute abTestRoute = getAbRoutingInfo(filterUtils.getServiceId());
-
-        if (abTestRoute != null && useSpecialRoute(abTestRoute)) {
-            String route = buildRouteString(ctx.getRequest().getRequestURI(),
-                    abTestRoute.getEndpoint(),
-                    ctx.get("serviceId").toString());
-            forwardToSpecialRoute(route);
-        }
-
-        return null;
-    }
-
     private void forwardToSpecialRoute(String route) {
         RequestContext context = RequestContext.getCurrentContext();
         HttpServletRequest request = context.getRequest();
 
-        MultiValueMap<String, String> headers = this.helper
-                .buildZuulRequestHeaders(request);
-        MultiValueMap<String, String> params = this.helper
-                .buildZuulRequestQueryParams(request);
+        MultiValueMap<String, String> headers =
+                this.helper.buildZuulRequestHeaders(request);
+        MultiValueMap<String, String> params =
+                this.helper.buildZuulRequestQueryParams(request);
         String verb = getVerb(request);
         InputStream requestEntity = getRequestBody(request);
         if (request.getContentLength() < 0) {

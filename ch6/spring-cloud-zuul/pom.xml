@@ -34,6 +34,7 @@
         <module>spring-cloud-licensing-service</module>
         <module>spring-cloud-organization-service</module>
         <module>spring-cloud-zuul-service</module>
+        <module>spring-cloud-special-routes-service</module>
     </modules>
 
     <dependencyManagement>

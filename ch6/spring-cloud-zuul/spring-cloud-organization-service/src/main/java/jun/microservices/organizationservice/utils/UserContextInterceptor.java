@@ -18,7 +18,8 @@ public class UserContextInterceptor implements ClientHttpRequestInterceptor {
 
     @Override
     public ClientHttpResponse intercept(
-            HttpRequest request, byte[] body, ClientHttpRequestExecution execution)
+            HttpRequest request, byte[] body,
+            ClientHttpRequestExecution execution)
             throws IOException {
 
         HttpHeaders headers = request.getHeaders();

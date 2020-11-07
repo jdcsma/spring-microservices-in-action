@@ -63,7 +63,7 @@ public class LicenseServiceImpl implements LicenseService {
 
         logger.info("Correlation id: {}", UserContextHolder.getContext().getCorrelationId());
 
-//        this.randomRunLong();
+        this.randomRunLong();
 
         List<License> licenses = this.licenseRepository.findByOrganizationId(organizationId);
         licenses.forEach(this::retrieveOrganizationInfo);
@@ -77,7 +77,7 @@ public class LicenseServiceImpl implements LicenseService {
 
         logger.info("Correlation id: {}", UserContextHolder.getContext().getCorrelationId());
 
-//        this.randomRunLong();
+        this.randomRunLong();
 
         License license = this.licenseRepository.findByOrganizationIdAndLicenseId(organizationId, licenseId);
         this.retrieveOrganizationInfo(license);
