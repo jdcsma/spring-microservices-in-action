@@ -1,0 +1,32 @@
+debug: false
+
+server:
+  # Eureka 服务器默认端口
+  port: 8761
+
+spring:
+  application:
+    name: eureka-server
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+eureka:
+  client:
+    # 在 Eureka 应用程序启动时不要通过 Eureka 服务注册，
+    # 因为它本身就是 Eureka 服务。
+    registerWithEureka: false
+    # 在 Eureka 应用程序启动时，不会尝试在本地缓存注册表信息。
+    fetchRegistry: false
+  server:
+    # 设置 Eureka 启动后公布通过它注册的服务的等待时间，默认为 5 分钟，
+    # 这样可以让所有服务都有机会在公布它们之前通过它来注册。
+    # 在测试环境中可以设置它，将有助于加快 Eureka 服务启动和显示通过它
+    # 注册服务所需的时间。
+    # 每次服务注册需要 30s 的时间才能显示在 Eureka 服务中，因为 Eureka
+    # 需要从服务接收 3 次连续心跳 ping，每次心跳 ping 间隔 10s，然后才
+    # 能使用这个服务。在部署和测试服务时，要牢记这一点。
+    waitTimeInMsWhenSyncEmpty: 5

@@ -1,0 +1,127 @@
+# @See org.springframework.boot.autoconfigure.web.ServerProperties
+server:
+  port: 8080
+
+# @See org.springframework.cloud.netflix.zuul.filters.ZuulProperties
+zuul:
+  prefix: "/api"
+  # 不将 "Authorization" 信息传递给下游服务
+  #  sensitiveHeaders: "Authorization"
+  # 将 "Cookie,Set-Cookie" 信息传递给下游服务
+  sensitiveHeaders: "Cookie,Set-Cookie"
+  debug:
+    request: true
+  # 定义手动映射路由
+  ignoredServices: "*"
+  routes:
+    licensing-service: "/licensing/**"
+    organization-service: "/organization/**"
+
+# 设定指定服务超时为 3000 毫秒，其中 command 后接指定的服务名称
+# 注意：当 hystrixTimeout 小于 ribbonTimeout 时将给出警告。
+#
+# protected static int getHystrixTimeout(IClientConfig config, String commandKey) {
+#     int ribbonTimeout = getRibbonTimeout(config, commandKey);
+#     DynamicPropertyFactory dynamicPropertyFactory = DynamicPropertyFactory
+#             .getInstance();
+#     int defaultHystrixTimeout = dynamicPropertyFactory.getIntProperty(
+#             "hystrix.command.default.execution.isolation.thread.timeoutInMilliseconds",
+#             0).get();
+#     int commandHystrixTimeout = dynamicPropertyFactory
+#             .getIntProperty("hystrix.command." + commandKey
+#                     + ".execution.isolation.thread.timeoutInMilliseconds", 0)
+#             .get();
+#     int hystrixTimeout;
+#     if (commandHystrixTimeout > 0) {
+#         hystrixTimeout = commandHystrixTimeout;
+#     }
+#     else if (defaultHystrixTimeout > 0) {
+#         hystrixTimeout = defaultHystrixTimeout;
+#     }
+#     else {
+#         // 如果 hystrixTimeout 为设置时超时时间与 ribbonTimeout 相同
+#         hystrixTimeout = ribbonTimeout;
+#     }
+#     // hystrixTimeout 小于 ribbonTimeout 将给出警告
+#     if (hystrixTimeout < ribbonTimeout) {
+#         LOGGER.warn("The Hystrix timeout of " + hystrixTimeout + "ms for the command "
+#                 + commandKey
+#                 + " is set lower than the combination of the Ribbon read and connect timeout, "
+#                 + ribbonTimeout + "ms.");
+#     }
+#     return hystrixTimeout;
+# }
+#
+# 注意：默认 ribbonTimeout 设置算法为：
+#
+# protected static int getRibbonTimeout(IClientConfig config, String commandKey) {
+#     int ribbonTimeout;
+#     // 如果 config == null，那么 ribbonTimeout == 2 (DEFAULT_READ_TIMEOUT + DEFAULT_CONNECT_TIMEOUT)
+#     if (config == null) {
+#         // DEFAULT_READ_TIMEOUT 和 DEFAULT_CONNECT_TIMEOUT 默认为 1000 毫秒
+#         ribbonTimeout = RibbonClientConfiguration.DEFAULT_READ_TIMEOUT
+#                 + RibbonClientConfiguration.DEFAULT_CONNECT_TIMEOUT;
+#     }
+#     else {
+#         int ribbonReadTimeout = getTimeout(config, commandKey, "ReadTimeout",
+#                 IClientConfigKey.Keys.ReadTimeout,
+#                 RibbonClientConfiguration.DEFAULT_READ_TIMEOUT);
+#         int ribbonConnectTimeout = getTimeout(config, commandKey, "ConnectTimeout",
+#                 IClientConfigKey.Keys.ConnectTimeout,
+#                 RibbonClientConfiguration.DEFAULT_CONNECT_TIMEOUT);
+#         int maxAutoRetries = getTimeout(config, commandKey, "MaxAutoRetries",
+#                 IClientConfigKey.Keys.MaxAutoRetries,
+#                 DefaultClientConfigImpl.DEFAULT_MAX_AUTO_RETRIES);
+#         int maxAutoRetriesNextServer = getTimeout(config, commandKey,
+#                 "MaxAutoRetriesNextServer",
+#                 IClientConfigKey.Keys.MaxAutoRetriesNextServer,
+#                 DefaultClientConfigImpl.DEFAULT_MAX_AUTO_RETRIES_NEXT_SERVER);
+#         // 计算最终的超时时间
+#         ribbonTimeout = (ribbonReadTimeout + ribbonConnectTimeout)
+#                 * (maxAutoRetries + 1) * (maxAutoRetriesNextServer + 1);
+#     }
+#     return ribbonTimeout;
+# }
+hystrix:
+  command:
+    licensing-service:
+      execution:
+        isolation:
+          thread:
+            # hystrixTimeout == ribbonTimeout @see getRibbonTimeout
+            timeoutInMilliseconds: 4000
+    organization-service:
+      execution:
+        isolation:
+          thread:
+            # hystrixTimeout == ribbonTimeout @see getRibbonTimeout
+            timeoutInMillisconds: 4000
+
+ribbon:
+  # Ribbon client default read timeout.
+  # RibbonClientConfiguration.DEFAULT_READ_TIMEOUT = 1000
+  ReadTimeout: 1000
+  # Ribbon client default connect timeout.
+  # RibbonClientConfiguration.DEFAULT_CONNECT_TIMEOUT = 1000
+  ConnectTimeout: 1000
+  # DefaultClientConfigImpl.DEFAULT_MAX_AUTO_RETRIES = 0
+  MaxAutoRetries: 0
+  # DefaultClientConfigImpl.DEFAULT_MAX_AUTO_RETRIES_NEXT_SERVER = 1
+  MaxAutoRetriesNextServer: 1
+  eureka:
+    enabled: "true"
+
+signing:
+  key: "345345fsdfsf5345"
+
+# Zuul /routes actuator endpoint returning a 404
+# It's now at /actuator/routes and needs to be enabled.
+# 例如：查看当前路由配置
+#   URL: http://localhost:8080/actuator/routes
+# See: https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-2.0-Migration-Guide#endpoints
+management:
+  endpoints:
+    web:
+      exposure:
+        include: mappings,filters,routes
+#        include: "*"

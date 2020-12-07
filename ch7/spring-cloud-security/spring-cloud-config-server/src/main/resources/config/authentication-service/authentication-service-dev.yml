@@ -1,0 +1,46 @@
+service:
+  property: "I AM A DEVELOPMENT PROPERTY"
+
+# @See org.springframework.boot.autoconfigure.web.ServerProperties
+server:
+  port: 8084
+  servlet:
+    contextPath: /auth
+
+spring:
+  datasource:
+    druid:
+      client:
+        name: "auth_client"
+        url: "jdbc:mysql://localhost:3306/auth_client_dev?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&useSSL=false&allowPublicKeyRetrieval=true"
+        username: "root"
+        password: "{cipher}1a6d087099a484013f94121ba60d15688a2307dcbff5769ee7e6ec33eae74393"
+        driverName: "com.mysql.cj.jdbc.Driver"
+        initialSize: "1"
+        maxActive: "1"
+        keepAlive: "1"
+        filters: "wall"
+      user:
+        name: "auth_user"
+        url: "jdbc:mysql://localhost:3306/auth_user_dev?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&useSSL=false&allowPublicKeyRetrieval=true"
+        username: "root"
+        password: "{cipher}1a6d087099a484013f94121ba60d15688a2307dcbff5769ee7e6ec33eae74393"
+        driverName: "com.mysql.cj.jdbc.Driver"
+        initialSize: "1"
+        maxActive: "1"
+        keepAlive: "1"
+        filters: "wall"
+
+redis:
+  server: "redis"
+  port: "6379"
+
+signing:
+  key: "345345fsdfsf5345"
+
+management:
+  endpoints:
+    web:
+      expsure:
+        include: "mappings,refresh"
+
