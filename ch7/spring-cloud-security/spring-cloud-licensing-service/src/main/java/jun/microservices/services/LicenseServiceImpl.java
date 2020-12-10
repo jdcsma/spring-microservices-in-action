@@ -125,7 +125,7 @@ public class LicenseServiceImpl implements LicenseService {
 
         // 在使用支持 Ribbon 的 RestTemplate 时，使用 Eureka 服务 ID 来构建目标 URL，
         // 而不是在 RestTemplate 调用中使用服务的物理位置。
-        final String serviceUrl = "http://zuul-service/api/organization/v1/organizations/{organizationId}";
+        final String serviceUrl = "http://gateway-service/api/organization/v1/organizations/{organizationId}";
 
         logger.info("!!!! SERVICE URL:  " + serviceUrl);
 

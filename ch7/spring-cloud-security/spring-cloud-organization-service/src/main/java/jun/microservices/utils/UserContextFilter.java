@@ -20,15 +20,17 @@ public class UserContextFilter implements Filter {
 
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
 
-        UserContextHolder.getContext().setCorrelationId(httpServletRequest.getHeader(UserContext.CORRELATION_ID));
-        UserContextHolder.getContext().setUserId(httpServletRequest.getHeader(UserContext.USER_ID));
-        UserContextHolder.getContext().setAuthorizationToken(httpServletRequest.getHeader(UserContext.AUTHORIZATION_TOKEN));
-        UserContextHolder.getContext().setOrganizationId(httpServletRequest.getHeader(UserContext.ORGANIZATION_ID));
+        UserContextHolder.getContext().setCorrelationId(
+                httpServletRequest.getHeader(UserContext.CORRELATION_ID));
+        UserContextHolder.getContext().setUserId(
+                httpServletRequest.getHeader(UserContext.USER_ID));
+        UserContextHolder.getContext().setAuthorizationToken(
+                httpServletRequest.getHeader(UserContext.AUTHORIZATION_TOKEN));
+        UserContextHolder.getContext().setOrganizationId(
+                httpServletRequest.getHeader(UserContext.ORGANIZATION_ID));
 
-        logger.info("uri:{}", httpServletRequest.getRequestURI());
-        logger.info("authorization:{}", httpServletRequest.getHeader("Authorization"));
         logger.info("correlation id:{}", UserContextHolder.getContext().getCorrelationId());
-        logger.info("auth token:{}", UserContextHolder.getContext().getAuthorizationToken());
+        logger.info("authorization token:{}", UserContextHolder.getContext().getAuthorizationToken());
         logger.info("user id:{}", UserContextHolder.getContext().getUserId());
         logger.info("organization id:{}", UserContextHolder.getContext().getOrganizationId());
 

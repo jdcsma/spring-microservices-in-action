@@ -13,7 +13,7 @@ public class UserContextHolder {
 
         if (context == null) {
             context = createEmptyContext();
-            userContext.set(context);
+            setContext(context);
 
         }
         return userContext.get();

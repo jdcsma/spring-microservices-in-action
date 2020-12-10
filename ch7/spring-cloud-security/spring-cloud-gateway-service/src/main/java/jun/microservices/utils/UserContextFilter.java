@@ -3,6 +3,7 @@ package jun.microservices.utils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -15,19 +16,28 @@ public class UserContextFilter implements Filter {
     private static final Logger logger = LogManager.getLogger();
 
     @Override
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
-            throws IOException, ServletException {
+    public void doFilter(
+            ServletRequest servletRequest, ServletResponse servletResponse,
+            FilterChain filterChain) throws IOException, ServletException {
 
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
 
         UserContextHolder.getContext().setCorrelationId(
                 httpServletRequest.getHeader(UserContext.CORRELATION_ID));
-        UserContextHolder.getContext().setAuthorizationToken(
-                httpServletRequest.getHeader(UserContext.AUTHORIZATION_TOKEN));
         UserContextHolder.getContext().setUserId(
                 httpServletRequest.getHeader(UserContext.USER_ID));
+        UserContextHolder.getContext().setAuthorizationToken(
+                httpServletRequest.getHeader(UserContext.AUTHORIZATION_TOKEN));
         UserContextHolder.getContext().setOrganizationId(
                 httpServletRequest.getHeader(UserContext.ORGANIZATION_ID));
+
+//        if (StringUtils.isEmpty(UserContextHolder.getContext().getAuthorizationToken())) {
+//            String authorizationToken = httpServletRequest.getHeader("Authorization");
+//            if (StringUtils.startsWithIgnoreCase(authorizationToken, "Bearer")) {
+//                logger.info("set authorization token {} to user context", authorizationToken);
+//                UserContextHolder.getContext().setAuthorizationToken(authorizationToken);
+//            }
+//        }
 
         logger.info("correlation id:{}", UserContextHolder.getContext().getCorrelationId());
         logger.info("authorization token:{}", UserContextHolder.getContext().getAuthorizationToken());
@@ -38,7 +48,7 @@ public class UserContextFilter implements Filter {
     }
 
     @Override
-    public void init(FilterConfig filterConfig) {
+    public void init(FilterConfig filterConfig) throws ServletException {
     }
 
     @Override

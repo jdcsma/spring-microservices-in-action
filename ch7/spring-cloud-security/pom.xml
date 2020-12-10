@@ -38,7 +38,7 @@
     <modules>
         <module>spring-cloud-config-server</module>
         <module>spring-cloud-eureka-server</module>
-        <module>spring-cloud-zuul-service</module>
+        <module>spring-cloud-gateway-service</module>
         <module>spring-cloud-licensing-service</module>
         <module>spring-cloud-organization-service</module>
         <module>spring-cloud-authentication-service</module>

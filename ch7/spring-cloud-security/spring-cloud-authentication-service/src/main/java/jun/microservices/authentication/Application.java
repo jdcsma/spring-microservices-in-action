@@ -10,6 +10,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 
+/*
 @EnableCaching              // 在 Spring 中开启缓存，避免 loadClientByClientId 多次调用：
                             //  1) TokenEndpoint.postAccessToken
                             //       TokenRequest tokenRequest = getOAuth2RequestFactory().createTokenRequest(parameters, authenticatedClient);
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
                             //       clientDetails = clientDetailsService.loadClientByClientId(username);
                             // 4) AbstractTokenGranter.grant
                             //       ClientDetails client = clientDetailsService.loadClientByClientId(clientId);
+ */
 @EnableEurekaClient         // 在 Spring 服务中启用 Eureka 客户端
 @EnableResourceServer
 @EnableAuthorizationServer

@@ -38,12 +38,12 @@ CREATE TABLE user_authority
 # VALUES ('john.carnell', '$2a$10$r9BL/rId0TistJYhSfdDxOSgWE7t/uV3foMmBKNWa3sfzpkH/DZ3e', TRUE, TRUE, TRUE, TRUE);
 #
 # INSERT INTO user_authority (user_id, authority)
-# VALUES (1, 'USER');
+# VALUES (1, 'ROLE_USER');
 #
 # INSERT INTO user_principal (username, hashed_password, account_non_expired,
 #                             account_non_locked, credentials_non_expired, enabled)
 # VALUES ('william.woodward', '$2a$10$r9BL/rId0TistJYhSfdDxOSgWE7t/uV3foMmBKNWa3sfzpkH/DZ3e', TRUE, TRUE, TRUE, TRUE);
 #
 # INSERT INTO user_authority (user_id, authority)
-# VALUES (2, 'USER'),
-#        (2, 'ADMIN');
+# VALUES (2, 'ROLE_USER'),
+#        (2, 'ROLE_ADMIN');

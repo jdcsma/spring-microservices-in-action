@@ -21,7 +21,7 @@ public class ClientServiceImpl implements ClientService {
         this.mapper = mapper;
     }
 
-    @Cacheable("ClientDetails")
+//    @Cacheable("ClientDetails")
     @Transactional("ClientTransactionManager")
     @Override
     public ClientDetails loadClientByClientId(String clientId) {

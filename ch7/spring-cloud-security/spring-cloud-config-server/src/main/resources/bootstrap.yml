@@ -20,10 +20,11 @@ spring:
           enabled: false
         native:
           searchLocations:
-            classpath:config/licensing-service,
-            classpath:config/organization-service,
-            classpath:config/zuul-service,
-            classpath:config/authentication-service
+            classpath:config/eureka,
+            classpath:config/gateway,
+            classpath:config/licensing,
+            classpath:config/organization,
+            classpath:config/authentication
 
 ####
 # Git-based solution
@@ -37,11 +38,11 @@ spring:
 #          enabled: false
 #        git:
 #          uri: https://github.com/xxxx/config-repo/
-#          searchPaths: licensing-service,organization-service,zuul-service,authentication-service
+#          searchPaths: licensing-service,organization-service,gateway-service,authentication-service
 #          username: username
 #          password: password
 
-# 为数据库密码配置加密密钥
+# 为数据库密码配置密钥
 #
 # 注意：在使用时需要在加密串前添加 "{cipher}" 前缀：
 #  spring:
