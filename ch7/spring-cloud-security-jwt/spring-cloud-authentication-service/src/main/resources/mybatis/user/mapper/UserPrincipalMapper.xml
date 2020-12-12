@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="jun.microservices.authentication.mapper.user.UserPrincipalMapper">
+
+    <resultMap id="UserPrincipalMap" type="UserPrincipal">
+        <id property="userId" column="user_id"/>
+        <result property="username" column="username"/>
+        <result property="hashedPassword" column="hashed_password"/>
+        <result property="accountNonExpired" column="account_non_expired"/>
+        <result property="accountNonLocked" column="account_non_locked"/>
+        <result property="credentialsNonExpired" column="credentials_non_expired"/>
+        <result property="enabled" column="enabled"/>
+        <!--
+            注意：Mybatis 的 resultMap 在解析是按下面的顺序进行：
+            "(constructor?,id*,result*,association*,collection*,discriminator?)".
+            所以 collection 元素必须放在所有 result 元素之后，否则会出错。
+         -->
+        <collection property="authorities" column="user_id"
+                    select="jun.microservices.authentication.mapper.user.UserAuthorityMapper.loadAuthorityByUserId"
+                    fetchType="lazy">
+        </collection>
+    </resultMap>
+
+    <select id="loadUserByUsername" parameterType="string"
+            resultMap="UserPrincipalMap" resultType="UserPrincipal">
+        SELECT *
+        FROM user_principal
+        WHERE username = #{username}
+    </select>
+
+    <select id="loadUserByUserId" parameterType="int"
+            resultMap="UserPrincipalMap" resultType="UserPrincipal">
+        SELECT *
+        FROM user_principal
+        WHERE user_id = #{userId}
+    </select>
+
+    <insert id="saveUser" parameterType="UserPrincipal"
+            keyProperty="userId" useGeneratedKeys="true">
+        INSERT INTO user_principal (username, hashed_password, account_non_expired, account_non_locked,
+                                    credentials_non_expired, enabled)
+            VALUE (#{username}, #{hashedPassword}, #{accountNonExpired}, #{accountNonLocked}, #{credentialsNonExpired},
+                   #{enabled})
+    </insert>
+</mapper>

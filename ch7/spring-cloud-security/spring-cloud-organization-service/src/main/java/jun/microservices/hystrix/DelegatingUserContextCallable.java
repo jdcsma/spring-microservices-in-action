@@ -1,7 +1,7 @@
 package jun.microservices.hystrix;
 
-import jun.microservices.utils.UserContext;
-import jun.microservices.utils.UserContextHolder;
+import jun.microservices.util.UserContext;
+import jun.microservices.util.UserContextHolder;
 
 import java.util.concurrent.Callable;
 

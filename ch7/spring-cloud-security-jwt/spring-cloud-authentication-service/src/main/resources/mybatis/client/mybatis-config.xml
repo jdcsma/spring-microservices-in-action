@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <!--
+        注意：Mybatis 的 configuration 在解析是按下面的顺序进行：
+        "(properties?,settings?,typeAliases?,typeHandlers?,objectFactory?,objectWrapperFactory?,reflectorFactory?,plugins?,environments?,databaseIdProvider?,mappers?)".
+        所以 typeAliases 元素必须放在所有 typeAliases 元素之前，否则会出错。
+     -->
+    <settings>
+        <!-- lazyLoadingEnabled: 延迟加载的全局开关。当开启时，所有关联对象都会延迟加载，默认为 false -->
+        <setting name="lazyLoadingEnabled" value="true"/>
+        <!-- aggressiveLazyLoading: 属性启动时，会使带有延迟加载属性的对象立即加载，反之，每种属性将会按需加载。默认 true -->
+        <setting name="aggressiveLazyLoading" value="false"/>
+    </settings>
+
+    <typeAliases>
+        <typeAlias alias="ClientPrincipal" type="jun.microservices.authentication.domain.client.ClientPrincipal"/>
+        <typeAlias alias="ClientPrincipalMapper" type="jun.microservices.authentication.mapper.client.ClientPrincipalMapper"/>
+    </typeAliases>
+</configuration>
