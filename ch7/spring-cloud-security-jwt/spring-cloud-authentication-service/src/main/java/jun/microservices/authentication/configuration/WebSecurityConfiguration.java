@@ -30,7 +30,7 @@ public class WebSecurityConfiguration
         this.userDetailsService = userDetailsService;
     }
 
-    // Used in OAuth2Config
+    // Used in OAuth2Configuration
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {

@@ -32,10 +32,6 @@ security:
   oauth2:
     resource:
       userInfoUri: "http://localhost:8084/auth/user_authorities"
-    client:
-      # @see org.springframework.boot.autoconfigure.security.oauth2.client.ClientCredentialsCondition
-      # @see org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2RestOperationsConfiguration.SingletonScopedConfiguration
-      grantType: "client_credentials"
 
 redis:
   server: "redis"
