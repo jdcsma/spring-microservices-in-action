@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="jun.microservices.authentication.mapper.client.ClientPrincipalMapper">
+
+    <resultMap id="ClientPrincipalMap" type="ClientPrincipal">
+        <id property="clientId" column="client_id"/>
+        <result property="hashedSecret" column="hashed_secret"/>
+        <result property="scope" column="scope"/>
+        <result property="authorizedGrantTypes" column="authorized_grant_types"/>
+    </resultMap>
+
+    <select id="loadClientByClientId" parameterType="string"
+            resultMap="ClientPrincipalMap">
+        SELECT *
+        FROM client_principal
+        WHERE client_id = #{clientId}
+    </select>
+
+    <insert id="saveClient" parameterType="ClientPrincipal"
+            keyProperty="clientId" keyColumn="client_id" useGeneratedKeys="true">
+        INSERT INTO client_principal (client_id, hashed_secret, scope, authorized_grant_types)
+            VALUE (#{clientId}, #{hashedSecret}, #{scope}, #{authorizedGrantTypes})
+    </insert>
+</mapper>
