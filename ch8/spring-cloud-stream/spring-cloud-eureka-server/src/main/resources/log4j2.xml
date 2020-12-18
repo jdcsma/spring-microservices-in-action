@@ -20,7 +20,6 @@
         <Logger name="jun.microservices" level="debug" additivity="false">
             <AppenderRef ref="STDOUT"/>
         </Logger>
-        <Logger name="com.netflix" level="debug"/>
         <Logger name="org.apache" level="info"/>
         <Logger name="org.springframework" level="info"/>
     </Loggers>

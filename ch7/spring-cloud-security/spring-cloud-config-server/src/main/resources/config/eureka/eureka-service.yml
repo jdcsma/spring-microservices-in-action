@@ -4,35 +4,17 @@ server:
   # Eureka 服务器默认端口
   port: 8761
 
-# Avoid Warning:
-#  You already have RibbonLoadBalancerClient on your classpath.
-#  It will be used by default. As Spring Cloud Ribbon is in maintenance mode.
-#  We recommend switching to BlockingLoadBalancerClient instead. In order to use it,
-#  set the value of `spring.cloud.loadbalancer.ribbon.enabled` to `false` or
-#  remove spring-cloud-starter-netflix-ribbon from your project.
-#
-# Conflict:
-#  - org.springframework.cloud.loadbalancer.config.BlockingLoadBalancerClientAutoConfiguration
-#     // in org.springframework.cloud:spring-cloud-starter-loadbalancer:2.2.4.RELEASE
-#     @Bean
-#     @ConditionalOnClass(
-#       name = "org.springframework.cloud.netflix.ribbon.RibbonLoadBalancerClient")
-#     @ConditionalOnProperty(value = "spring.cloud.loadbalancer.ribbon.enabled",
-#       matchIfMissing = true)
-#     public BlockingLoadBalancerClientRibbonWarnLogger blockingLoadBalancerClientRibbonWarnLogger() {
-#       return new BlockingLoadBalancerClientRibbonWarnLogger();
-#     }
-#  - org.springframework.cloud.netflix.ribbon.RibbonAutoConfiguration
-#     // org.springframework.cloud:spring-cloud-netflix-ribbon:2.2.4.RELEASE
-#     @Bean
-#     @ConditionalOnMissingBean(LoadBalancerClient.class)
-#     public LoadBalancerClient loadBalancerClient() {
-#       return new RibbonLoadBalancerClient(springClientFactory());
-#     }
 spring:
   cloud:
     loadbalancer:
       ribbon:
+        # The property is important.
+        # It disables the default Netflix Ribbon-backed load balancing strategy
+        # that’s been in place since Spring Cloud debuted in 2015.
+        # We want to use the new Spring Cloud Load balancer.
+        enabled: false
+      cache:
+        # Disables Spring Cloud LoadBalancer caching mechanism.
         enabled: false
 
 management:

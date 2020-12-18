@@ -54,9 +54,7 @@ public class LicenseServiceImpl implements LicenseService {
             },
             // @see com.netflix.hystrix.HystrixCommandProperties
             commandProperties = {
-//                    @HystrixProperty(
-//                            name = "execution.isolation.thread.timeoutInMilliseconds",
-//                            value = "12000"),
+                    @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "3000"),
                     @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "10"),
                     @HystrixProperty(name = "circuitBreaker.errorThresholdPercentage", value = "75"),
                     @HystrixProperty(name = "circuitBreaker.sleepWindowInMilliseconds", value = "7000"),

@@ -1,4 +1,4 @@
-debug: true
+debug: false
 
 service:
   property: "I AM A DEVELOPMENT PROPERTY"
@@ -26,6 +26,17 @@ spring:
         naming:
           implicitStrategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
           physicalStrategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+  cloud:
+    loadbalancer:
+      ribbon:
+        # The property is important.
+        # It disables the default Netflix Ribbon-backed load balancing strategy
+        # that’s been in place since Spring Cloud debuted in 2015.
+        # We want to use the new Spring Cloud Load balancer.
+        enabled: false
+      cache:
+        # Disables Spring Cloud LoadBalancer caching mechanism.
+        enabled: false
 
 security:
   oauth2:

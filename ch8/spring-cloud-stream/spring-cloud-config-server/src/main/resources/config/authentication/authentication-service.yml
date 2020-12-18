@@ -1,4 +1,4 @@
-debug: true
+debug: false
 
 service:
   property: "I AM A DEFAULT PROPERTY"
@@ -32,6 +32,17 @@ spring:
         maxActive: "1"
         keepAlive: "1"
         filters: "wall"
+  cloud:
+    loadbalancer:
+      ribbon:
+        # The property is important.
+        # It disables the default Netflix Ribbon-backed load balancing strategy
+        # that’s been in place since Spring Cloud debuted in 2015.
+        # We want to use the new Spring Cloud Load balancer.
+        enabled: false
+      cache:
+        # Disables Spring Cloud LoadBalancer caching mechanism.
+        enabled: false
 
 signing:
   key: "345345fsdfsf5345"

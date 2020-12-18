@@ -27,6 +27,16 @@ spring:
           implicitStrategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
           physicalStrategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
   cloud:
+    loadbalancer:
+      ribbon:
+        # The property is important.
+        # It disables the default Netflix Ribbon-backed load balancing strategy
+        # that’s been in place since Spring Cloud debuted in 2015.
+        # We want to use the new Spring Cloud Load balancer.
+        enabled: false
+      cache:
+        # Disables Spring Cloud LoadBalancer caching mechanism.
+        enabled: false
     stream:
       # @See https://docs.spring.io/spring-cloud-stream/docs/3.0.10.RELEASE/reference/html/spring-cloud-stream.html#_common_binding_properties
       # @see org.springframework.cloud.stream.config.BindingProperties

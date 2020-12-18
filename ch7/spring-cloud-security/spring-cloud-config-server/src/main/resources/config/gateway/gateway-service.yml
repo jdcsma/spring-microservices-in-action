@@ -1,38 +1,20 @@
-debug: true
+debug: false
 
 # @See org.springframework.boot.autoconfigure.web.ServerProperties
 server:
   port: 8080
 
-# Avoid Warning:
-#  You already have RibbonLoadBalancerClient on your classpath.
-#  It will be used by default. As Spring Cloud Ribbon is in maintenance mode.
-#  We recommend switching to BlockingLoadBalancerClient instead. In order to use it,
-#  set the value of `spring.cloud.loadbalancer.ribbon.enabled` to `false` or
-#  remove spring-cloud-starter-netflix-ribbon from your project.
-#
-# Conflict:
-#  - org.springframework.cloud.loadbalancer.config.BlockingLoadBalancerClientAutoConfiguration
-#     // in org.springframework.cloud:spring-cloud-starter-loadbalancer:2.2.4.RELEASE
-#     @Bean
-#     @ConditionalOnClass(
-#       name = "org.springframework.cloud.netflix.ribbon.RibbonLoadBalancerClient")
-#     @ConditionalOnProperty(value = "spring.cloud.loadbalancer.ribbon.enabled",
-#       matchIfMissing = true)
-#     public BlockingLoadBalancerClientRibbonWarnLogger blockingLoadBalancerClientRibbonWarnLogger() {
-#       return new BlockingLoadBalancerClientRibbonWarnLogger();
-#     }
-#  - org.springframework.cloud.netflix.ribbon.RibbonAutoConfiguration
-#     // org.springframework.cloud:spring-cloud-netflix-ribbon:2.2.4.RELEASE
-#     @Bean
-#     @ConditionalOnMissingBean(LoadBalancerClient.class)
-#     public LoadBalancerClient loadBalancerClient() {
-#       return new RibbonLoadBalancerClient(springClientFactory());
-#     }
 spring:
   cloud:
     loadbalancer:
       ribbon:
+        # The property is important.
+        # It disables the default Netflix Ribbon-backed load balancing strategy
+        # that’s been in place since Spring Cloud debuted in 2015.
+        # We want to use the new Spring Cloud Load balancer.
+        enabled: false
+      cache:
+        # Disables Spring Cloud LoadBalancer caching mechanism.
         enabled: false
 
 # @See org.springframework.cloud.netflix.zuul.filters.ZuulProperties
@@ -51,97 +33,13 @@ zuul:
     organization-service: "/organization/**"
     authentication-service: "/authentication/**"
 
-# 设定指定服务超时为 3000 毫秒，其中 command 后接指定的服务名称
-# 注意：当 hystrixTimeout 小于 ribbonTimeout 时将给出警告。
-#
-# protected static int getHystrixTimeout(IClientConfig config, String commandKey) {
-#     int ribbonTimeout = getRibbonTimeout(config, commandKey);
-#     DynamicPropertyFactory dynamicPropertyFactory = DynamicPropertyFactory
-#             .getInstance();
-#     int defaultHystrixTimeout = dynamicPropertyFactory.getIntProperty(
-#             "hystrix.command.default.execution.isolation.thread.timeoutInMilliseconds",
-#             0).get();
-#     int commandHystrixTimeout = dynamicPropertyFactory
-#             .getIntProperty("hystrix.command." + commandKey
-#                     + ".execution.isolation.thread.timeoutInMilliseconds", 0)
-#             .get();
-#     int hystrixTimeout;
-#     if (commandHystrixTimeout > 0) {
-#         hystrixTimeout = commandHystrixTimeout;
-#     }
-#     else if (defaultHystrixTimeout > 0) {
-#         hystrixTimeout = defaultHystrixTimeout;
-#     }
-#     else {
-#         // 如果 hystrixTimeout 为设置时超时时间与 ribbonTimeout 相同
-#         hystrixTimeout = ribbonTimeout;
-#     }
-#     // hystrixTimeout 小于 ribbonTimeout 将给出警告
-#     if (hystrixTimeout < ribbonTimeout) {
-#         LOGGER.warn("The Hystrix timeout of " + hystrixTimeout + "ms for the command "
-#                 + commandKey
-#                 + " is set lower than the combination of the Ribbon read and connect timeout, "
-#                 + ribbonTimeout + "ms.");
-#     }
-#     return hystrixTimeout;
-# }
-#
-# 注意：默认 ribbonTimeout 设置算法为：
-#
-# protected static int getRibbonTimeout(IClientConfig config, String commandKey) {
-#     int ribbonTimeout;
-#     if (config == null) {
-#         // 如果 config == null，那么 ribbonTimeout == 2 (DEFAULT_READ_TIMEOUT + DEFAULT_CONNECT_TIMEOUT)
-#         // DEFAULT_READ_TIMEOUT 和 DEFAULT_CONNECT_TIMEOUT 默认都为 1000 毫秒
-#         ribbonTimeout = RibbonClientConfiguration.DEFAULT_READ_TIMEOUT
-#                 + RibbonClientConfiguration.DEFAULT_CONNECT_TIMEOUT;
-#     }
-#     else {
-#         int ribbonReadTimeout = getTimeout(config, commandKey, "ReadTimeout",
-#                 IClientConfigKey.Keys.ReadTimeout,
-#                 RibbonClientConfiguration.DEFAULT_READ_TIMEOUT);
-#         int ribbonConnectTimeout = getTimeout(config, commandKey, "ConnectTimeout",
-#                 IClientConfigKey.Keys.ConnectTimeout,
-#                 RibbonClientConfiguration.DEFAULT_CONNECT_TIMEOUT);
-#         int maxAutoRetries = getTimeout(config, commandKey, "MaxAutoRetries",
-#                 IClientConfigKey.Keys.MaxAutoRetries,
-#                 DefaultClientConfigImpl.DEFAULT_MAX_AUTO_RETRIES);
-#         int maxAutoRetriesNextServer = getTimeout(config, commandKey,
-#                 "MaxAutoRetriesNextServer",
-#                 IClientConfigKey.Keys.MaxAutoRetriesNextServer,
-#                 DefaultClientConfigImpl.DEFAULT_MAX_AUTO_RETRIES_NEXT_SERVER);
-#         // 计算最终的超时时间
-#         ribbonTimeout = (ribbonReadTimeout + ribbonConnectTimeout)
-#                 * (maxAutoRetries + 1) * (maxAutoRetriesNextServer + 1);
-#     }
-#     return ribbonTimeout;
-# }
-hystrix:
-  command:
-    # When using Hystrix commands that wrap Ribbon clients you want to
-    # make sure your Hystrix timeout is configured to be longer than
-    # the configured Ribbon timeout, including any potential retries
-    # that might be made. For example, if your Ribbon connection timeout
-    # is one second and the Ribbon client might retry the request three times,
-    # than your Hystrix timeout should be slightly more than three seconds.
-    licensing-service:
-      execution:
-        isolation:
-          thread:
-            # hystrixTimeout >= ribbonTimeout @see getRibbonTimeout
-            timeoutInMilliseconds: 4000
-    organization-service:
-      execution:
-        isolation:
-          thread:
-            # hystrixTimeout >= ribbonTimeout @see getRibbonTimeout
-            timeoutInMillisconds: 4000
-
+# ribbonTimeout = (ribbonReadTimeout + ribbonConnectTimeout) * (maxAutoRetries + 1) * (maxAutoRetriesNextServer + 1);
+# ribbonTimeout = (3000 + 3000) * (1 + 0) + (1 + 1) = 12000 ms
 ribbon:
   # RibbonClientConfiguration.DEFAULT_READ_TIMEOUT = 1000
-  ReadTimeout: 1000
+  ReadTimeout: 3000
   # RibbonClientConfiguration.DEFAULT_CONNECT_TIMEOUT = 1000
-  ConnectTimeout: 1000
+  ConnectTimeout: 3000
   # DefaultClientConfigImpl.DEFAULT_MAX_AUTO_RETRIES = 0
   MaxAutoRetries: 0
   # DefaultClientConfigImpl.DEFAULT_MAX_AUTO_RETRIES_NEXT_SERVER = 1
