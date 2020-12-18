@@ -1,6 +1,5 @@
 package jun.microservices.authentication.domain.client;
 
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 

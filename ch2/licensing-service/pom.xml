@@ -28,6 +28,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
             <exclusions>
+                <!--
+                When using starters, Logback is used for logging by default.
+                In order to use log4j2 library other than Logback,
+                we need to exclude it from our dependencies.
+                -->
                 <exclusion>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-starter-logging</artifactId>
